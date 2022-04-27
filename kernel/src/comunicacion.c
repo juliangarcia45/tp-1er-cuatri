@@ -58,3 +58,29 @@ int server_escuchar(char* server_name, int server_socket) {
     }
     return 0;
 }
+
+//CLIENTE
+int generar_conexiones(int* interrupt_fd, int* dispatch_fd, t_config_kernel* configuracion) {
+    char* port_dispatch = string_itoa(configuracion->PUERTO_CPU_DISPATCH);
+    char* port_interrupt = string_itoa(configuracion->PUERTO_CPU_INTERRUPT);
+
+    *dispatch_fd = crear_conexion(
+            logger,
+            "CPU DISPATCH",
+            configuracion->IP_CPU,
+            port_dispatch
+    );
+
+    free(port_dispatch);
+
+    *interrupt_fd = crear_conexion(
+            logger,
+            "CPU INTERRUPT",
+            configuracion->IP_CPU,
+            port_interrupt
+    );
+
+    free(port_interrupt);
+
+    return *interrupt_fd != 0 && *dispatch_fd != 0;
+}

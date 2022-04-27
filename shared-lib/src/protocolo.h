@@ -19,10 +19,17 @@
 
 typedef enum {
     DEBUG = 69,
-	NO_OP
+	NO_OP,
+    I_O,
+    READ,
+    WRITE,
+    COPY,
+    EXIT
 } op_code;
 
 bool send_debug(int fd);
+bool send_debug_interrupt(int fd);
+bool validarOpCode(op_code cod);
 
 
 #endif /* SRC_PROTOCOLO_H_ */

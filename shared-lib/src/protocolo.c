@@ -14,3 +14,40 @@ bool send_debug(int fd) {
     }
     return true;
 }
+
+
+
+static void* serializar_instrucciones_tam(size_t* size, t_list* lista, int tamanioProceso) {
+
+	t_link_element* aux = lista->head;
+	INSTRUCCIONES* aux2 = aux;
+
+	*size = (2*sizeof(int)+strlen(aux2->))+1)*list_size(lista) + sizeof(int); // 2 uint8_t por cada elemento
+    void* stream = malloc(*size);
+
+    // serializo los elementos
+    t_list_iterator* list_it = list_iterator_create(lista);
+    for (int i=0; list_iterator_has_next(list_it); i+=3){
+    	INSTRUCCIONES* listInstrucciones = list_iterator_next(list_it);
+        memcpy(stream+(i+0)*strlen(listInstrucciones->comando)+1, &listInstrucciones->comando,  strlen(listInstrucciones->comando) + 1);
+        memcpy(stream+(i+1)*sizeof(int), &listInstrucciones->parametro, sizeof(int));
+        memcpy(stream+(i+3)*sizeof(int), &listInstrucciones->parametro2, sizeof(int));
+    }
+    memcpy(stream + sizeof(int), &tamanioProceso, sizeof(int));
+    list_iterator_destroy(list_it);
+    return stream;
+}
+
+/*
+static t_list* deserializar_t_list_posiciones(void* stream, uint8_t n_elements) {
+    t_list* lista = list_create();
+
+    // De-serializo y los meto en la lista
+    for (uint8_t i=0; n_elements>0; i+=2, n_elements--) {
+        t_posicion* pos = malloc(sizeof(t_posicion));
+        memcpy(&pos->x, stream+(i+0)*sizeof(uint8_t), sizeof(uint8_t));
+        memcpy(&pos->y, stream+(i+1)*sizeof(uint8_t), sizeof(uint8_t));
+        list_add(lista, pos);
+    }
+    return lista;
+}*/

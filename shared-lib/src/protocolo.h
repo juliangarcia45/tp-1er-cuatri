@@ -16,13 +16,20 @@
 #include <stdint.h>
 #include <string.h>
 #include <stdlib.h>
+#include <commons/collections/list.h>
+#include "estructuras.h"
 
 typedef enum {
     DEBUG = 69,
 	NO_OP
 } op_code;
 
-bool send_debug(int fd);
 
+
+
+
+
+bool send_debug(int fd);
+static void* serializar_instrucciones_tam(size_t* size, INSTRUCCIONES* lista, int tamanioProceso);
 
 #endif /* SRC_PROTOCOLO_H_ */

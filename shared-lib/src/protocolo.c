@@ -15,8 +15,97 @@ bool send_debug(int fd) {
     return true;
 }
 
+void* serializar_instrucciones_tam(size_t* size, t_list* lista, int tamanioProceso) {
 
+    t_list_iterator* listaIns=list_iterator_create(lista);
+    INSTRUCCIONES* aux=list_get(lista, 0);
 
+    aux=list_get(lista,0);
+
+    int offset = 0;
+    void* stream = malloc(*size);
+
+    while(list_iterator_has_next(listaIns)){
+    	memcpy(stream + offset, &aux->comando, sizeof(aux->comando));
+    	offset += sizeof(aux->comando);
+        memcpy(stream + offset, &aux->parametro, sizeof(int));
+        offset += sizeof(int);
+        memcpy(stream + offset, &aux->parametro2, sizeof(int));
+        offset += sizeof(int);
+
+    	aux = list_iterator_next(listaIns);
+        list_iterator_next(listaIns);
+    }
+    memcpy(stream + offset, &tamanioProceso, sizeof(int));
+
+    free(listaIns);
+    free(aux);
+    return stream;
+}
+
+void enviar_instrucciones(int socket_fd, int size, t_list* lista, int tamanioProceso ){
+	size = calcular_buffer_size(lista);
+	void* stream = serializar_instrucciones_tam(size, lista, tamanioProceso);
+
+	send(socket_fd, (void*) armar_buffer(size, stream), size,0);
+}
+
+int calcular_buffer_size(t_list* lista){
+	int size;
+	t_list_iterator* listaIns=list_iterator_create(lista);
+	INSTRUCCIONES* aux=list_get(lista, 0);
+
+	    while(list_iterator_has_next(listaIns)){
+	        size += 2*sizeof(int) + strlen(aux->comando) + 1;
+	        aux = list_iterator_next(listaIns);
+	        list_iterator_next(listaIns);
+	    }
+	    size += sizeof(int);
+	    free(listaIns);
+        free(aux);
+	    return size;
+}
+
+t_buffer* armar_buffer(int size, void* stream){
+
+	t_buffer* buffer = malloc(sizeof(t_buffer));
+	buffer->size = size;
+	buffer->stream = stream;
+
+	return buffer;
+}
+
+void* deserializar_instrucciones(t_mensaje mensaje, int socket_fd){
+	int size = sizeof(t_mensaje);
+
+    t_list_iterator* listaIns=list_iterator_create(mensaje.listaInstrucciones);
+    INSTRUCCIONES* aux=list_get(listaInstrucciones, 0);
+
+    aux=list_get(lista,0);
+
+    int offset = 0;
+    void* stream = malloc(*size);
+
+    while(list_iterator_has_next(listaIns)){
+    	memcpy(stream + offset, &aux->comando, sizeof(aux->comando));
+    	offset += sizeof(aux->comando);
+        memcpy(stream + offset, &aux->parametro, sizeof(int));
+        offset += sizeof(int);
+        memcpy(stream + offset, &aux->parametro2, sizeof(int));
+        offset += sizeof(int);
+
+    	aux = list_iterator_next(listaIns);
+        list_iterator_next(listaIns);
+    }
+    memcpy(stream + offset, &tamanioProceso, sizeof(int));
+
+}
+
+void recibir_mensaje(){
+
+}
+
+/*
 static void* serializar_instrucciones_tam(size_t* size, t_list* lista, int tamanioProceso) {
 
 	t_link_element* aux = lista->head;
@@ -36,7 +125,7 @@ static void* serializar_instrucciones_tam(size_t* size, t_list* lista, int taman
     memcpy(stream + sizeof(int), &tamanioProceso, sizeof(int));
     list_iterator_destroy(list_it);
     return stream;
-}
+}*/
 
 /*
 static t_list* deserializar_t_list_posiciones(void* stream, uint8_t n_elements) {

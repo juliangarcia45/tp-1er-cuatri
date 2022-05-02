@@ -24,12 +24,20 @@ typedef enum {
 	NO_OP
 } op_code;
 
+typedef struct{
+	t_list* listaInstrucciones;
+	int tamanioProceso;
+} t_mensaje;
 
+typedef struct {
+    int size; // Tamaño del payload
+    void* stream; // Payload
+} t_buffer;
 
 
 
 
 bool send_debug(int fd);
-static void* serializar_instrucciones_tam(size_t* size, INSTRUCCIONES* lista, int tamanioProceso);
+static void* serializar_instrucciones_tam(size_t* size, t_list* lista, int tamanioProceso);
 
 #endif /* SRC_PROTOCOLO_H_ */

@@ -72,7 +72,7 @@ int main(int argc, char** argv[]){
 	// enviarLista(lista, tamanioProceso);
 	int tam = atoi(argv[2]);
 	size_t* size;
-	serializar_instrucciones_tam(&size, listaInstrucciones, 3);
+	//serializar_instrucciones_tam(&size, listaInstrucciones, 3);
 	//free(tam);
 
     scanf("%d", &a);

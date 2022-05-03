@@ -38,6 +38,8 @@ typedef struct {
 
 
 bool send_debug(int fd);
-static void* serializar_instrucciones_tam(size_t* size, t_list* lista, int tamanioProceso);
+static void* serializar_instrucciones_tam(int size, t_list* lista, int tamanioProceso);
+void enviar_instrucciones(int socket_fd, int size, t_list* lista, int tamanioProceso );
+int calcular_buffer_size(t_list* lista);
 
 #endif /* SRC_PROTOCOLO_H_ */

@@ -24,6 +24,7 @@ static void procesar_conexion(void* void_args) {
             log_info(logger, "Se ha finalizado la conexion");
             return;
         }
+        //recibir_mensaje(int socket_fd, void* a_enviar );
 
         switch (cop) {
             case DEBUG:
@@ -35,7 +36,8 @@ static void procesar_conexion(void* void_args) {
                 return;
             default:
                 log_error(logger, "Algo anduvo mal en el server de %s", server_name);
-                log_info(logger, "Cop: %d", cop);
+                log_info(logger, "Cop: %s", cop);
+
                 return;
         }
     }

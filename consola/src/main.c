@@ -78,8 +78,8 @@ t_list* parseo_archivo(char** path)
 				printf("No se ha podido reservar memoria.\n");
 				exit(1);
 		}
-		instrucs->parametro=NULL;
-		instrucs->parametro2=NULL;
+		instrucs->parametro=0;
+		instrucs->parametro2=0;
 
 		for(i = 0; linea[i] != '\0'; i++)
 		{

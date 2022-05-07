@@ -50,6 +50,9 @@ int server_escuchar(char* server_name, int server_socket) {
     int cliente_socket = esperar_cliente(logger, server_name, server_socket);
 
     if (cliente_socket != -1) {
+    	t_mensaje* mensaje=malloc(sizeof(t_mensaje));
+    	mensaje=recibir_instrucciones(cliente_socket);
+    	log_info(logger,mensaje->tamanioProceso);
         pthread_t hilo;
         t_procesar_conexion_args* args = malloc(sizeof(t_procesar_conexion_args));
         args->fd = cliente_socket;

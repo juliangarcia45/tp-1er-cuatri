@@ -14,15 +14,15 @@ int main(int argc, char** argv[]){
 	int a;
 
 	// Parseo del archivo y armado de lista
-	t_list* listaInstrucciones = parseo_archivo(argv[1]);
+	t_list* listaInstrucciones = parseo_archivo("/home/utnso/Escritorio/serializacion/tp-2022-1c-Grupo-52/consolaInstrucciones.txt");
 
 	// Enviar listaInstrucciones y atoi(argv[2])
-	printf("Parametro a envia con LISTA: %d \n", atoi(argv[2]));
+	printf("Parametro a envia con LISTA: %d \n", 500);
 	// enviarLista(lista, tamanioProceso);
-	int tam = atoi(argv[2]);
+	int tam = 500;
 	int size = 0;
 
- 	enviar_instrucciones(kernel_fd, size, listaInstrucciones,atoi(argv[2]));
+ 	enviar_instrucciones(kernel_fd, size, listaInstrucciones,500);
 
 
 	scanf("%d", &a);

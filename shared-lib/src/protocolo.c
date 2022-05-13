@@ -15,8 +15,8 @@ bool send_debug(int fd) {
     return true;
 }
 
-bool send_debug_interrupt(int fd) {
-    op_code cop = I_O;
+/*bool send_debug_interrupt(int fd) {
+    op_code cop = DEBUGDOS;
     if (send(fd, &cop, sizeof(op_code), 0) != sizeof(op_code)){
         return false;
     }
@@ -24,5 +24,5 @@ bool send_debug_interrupt(int fd) {
 }
 
 bool validarOpCode(op_code cod) {
-	return (cod == I_O || cod == EXIT);
-}
+	return (cod == DEBUGDOS || cod == I_O || cod == EXIT);
+}*/

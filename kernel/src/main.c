@@ -14,7 +14,7 @@ int main(){
 	generar_conexiones(&interrupt_fd, &dispatch_fd, configuracion);
 
 	//MENSAJES DE PRUEBA A CPU
-	send_debug_interrupt(interrupt_fd);
+	send_debug(interrupt_fd);
 	send_debug(dispatch_fd);
 
 	//INICIO SERVIDOR

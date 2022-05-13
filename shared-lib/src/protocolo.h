@@ -28,8 +28,8 @@ typedef enum {
 } op_code;
 
 bool send_debug(int fd);
-bool send_debug_interrupt(int fd);
-bool validarOpCode(op_code cod);
+//bool send_debug_interrupt(int fd);
+//bool validarOpCode(op_code cod);
 
 
 #endif /* SRC_PROTOCOLO_H_ */

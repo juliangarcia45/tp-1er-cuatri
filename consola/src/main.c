@@ -12,18 +12,19 @@ int main(int argc, char** argv[]){
 	generar_conexion(&kernel_fd, configuracion);
 
 	int a;
-
+	argv[1] = "/home/utnso/Escritorio/Tp kiss/tp-2022-1c-Grupo-52/consolaInstrucciones.txt";
+	argv[2] = "555";
 	// Parseo del archivo y armado de lista
-	t_list* listaInstrucciones = parseo_archivo("/home/utnso/Escritorio/serializacion/tp-2022-1c-Grupo-52/consolaInstrucciones.txt");
+	t_list* listaInstrucciones = parseo_archivo(argv[1]);
 
 	// Enviar listaInstrucciones y atoi(argv[2])
-	printf("Parametro a envia con LISTA: %d \n", 500);
+	//printf("Parametro a envia con LISTA: %d \n", atoi(argv[2]));
 	// enviarLista(lista, tamanioProceso);
-	int tam = 500;
+	int tam = atoi(argv[2]);
 	int size = 0;
+	printf("Parametro a envia con LISTA: %d \n", tam);
 
- 	enviar_instrucciones(kernel_fd, size, listaInstrucciones,500);
-
+ 	enviar_instrucciones(kernel_fd, size, listaInstrucciones,tam);
 
 	scanf("%d", &a);
 	send_debug(kernel_fd);
@@ -31,7 +32,6 @@ int main(int argc, char** argv[]){
 
 	scanf("%d", &a);
 	limpiarConfiguracion();
-
 
 
 }

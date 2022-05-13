@@ -52,7 +52,23 @@ int server_escuchar(char* server_name, int server_socket) {
     if (cliente_socket != -1) {
     	t_mensaje* mensaje=malloc(sizeof(t_mensaje));
     	mensaje=recibir_instrucciones(cliente_socket);
-    	log_info(logger,mensaje->tamanioProceso);
+    	/// PRINTS DE PRUEBAS ==> aca deberia de poder imprimirse bien la lista
+    	//log_info(logger,mensaje->tamanioProceso);
+    	printf("Cant Elementos: %d\n ", mensaje->elementosLista); //--> ok
+    	printf("Tam de proceso: %d\n ", mensaje->tamanioProceso); //--> ok
+    	//printf("-------LISTA------\n");
+    	//
+    	// Pruebas de impresion de la lista
+    	/* t_link_element* auxl1 = mensaje->listaInstrucciones->head;
+    	 printf("Contenido lista:\n");
+		while( auxl1!=NULL )
+			{
+				INSTRUCCIONES* auxl2 = auxl1->data;
+				printf("Comando: %s | Par1: %d | Par2: %d \n\n", auxl2->comando, auxl2->parametro, auxl2->parametro2 );
+				auxl1 = auxl1->next;
+			}*/
+    	//-------------------------------------
+
         pthread_t hilo;
         t_procesar_conexion_args* args = malloc(sizeof(t_procesar_conexion_args));
         args->fd = cliente_socket;

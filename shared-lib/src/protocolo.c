@@ -15,7 +15,7 @@ bool send_debug(int fd) {
     return true;
 }
 
-void* enviar_instrucciones(int socket_fd, int size, t_list* lista, int tamanioProceso ){
+void enviar_instrucciones(int socket_fd, int size, t_list* lista, int tamanioProceso ){
 
 	size = calcular_buffer_size(lista);
 	void* stream = serializar_instrucciones_tam(size, lista, tamanioProceso);
@@ -32,12 +32,8 @@ void* enviar_instrucciones(int socket_fd, int size, t_list* lista, int tamanioPr
 
 	send(socket_fd, a_enviar,buffer->size+sizeof(int) ,0);
 
-	free(stream);
-	//free(buffer->stream);
     free(buffer);
 	free(a_enviar);
-
-
 
 }
 
@@ -52,14 +48,7 @@ t_mensaje* recibir_instrucciones(int socket_fd)
 	t_mensaje* mensaje = deserializar_instrucciones(buffer);
 
 	//free(buffer);
-	 t_link_element* auxl1 = mensaje->listaInstrucciones->head;
-	    	 printf("Contenido lista:\n");
-			while( auxl1!=NULL )
-				{
-					INSTRUCCIONES* auxl2 = auxl1->data;
-					printf("Comando: %s | Par1: %d | Par2: %d \n\n", auxl2->comando, auxl2->parametro, auxl2->parametro2 );
-					auxl1 = auxl1->next;
-				}
+
 	return mensaje;
 }
 
@@ -80,7 +69,7 @@ void* serializar_instrucciones_tam(int size, t_list* lista, int tamanioProceso) 
     t_link_element* aux1 = lista->head;
 
     //TODO
-    // UNICO ERROR ==> El el comando COPY lelga con basura y se pasa bien con esa basura
+    // UNICO ERROR ==> En el comando COPY llega con basura y se pasa bien con esa basura
    while( aux1!=NULL )
 	{
 		INSTRUCCIONES* auxl2 = aux1->data;
@@ -110,38 +99,10 @@ t_mensaje* deserializar_instrucciones(t_buffer* buffer){
 
 	memcpy(&(mensaje->elementosLista), stream, sizeof(int));
 	stream += sizeof(int);
-	mensaje->listaInstrucciones = list_create();
 
-	//TODO
-	// Aca esta la lista ya llega bien, no la esta cargadno bien en mensaje->listaInstruccion, tanto el
-	// elementosLista y tamanio proceso llega bien, es como acceder a la lista como lo cambie en la
-	// serializacion hay q acomodarlo aca.
-	t_link_element* auxl1 = mensaje->listaInstrucciones->head;
-	printf("Contenido lista:\n");
-	while( i!=mensaje->elementosLista )
-	{
-		INSTRUCCIONES* aux = auxl1->data; malloc(sizeof(INSTRUCCIONES));
-
-		//printf("Comando: %s | Par1: %d | Par2: %d \n\n", auxl2->comando, auxl2->parametro, auxl2->parametro2 );
-
-		memcpy(&(aux->comando), stream, sizeof(aux->comando));
-		stream += sizeof(aux->comando);
-		memcpy(&(aux->parametro),stream , sizeof(int));
-		stream += sizeof(int);
-		memcpy(&(aux->parametro2), stream, sizeof(int));
-		stream += sizeof(int);
-		auxl1 = auxl1->next;
-		list_add(mensaje->listaInstrucciones,aux);
-		i++;
-		free(aux);
-	}
-
-
-	/*
 	while(i!=mensaje->elementosLista)
 	{
 		INSTRUCCIONES* aux=malloc(sizeof(INSTRUCCIONES));
-
 		memcpy(&(aux->comando), stream, sizeof(aux->comando));
 	    stream += sizeof(aux->comando);
 	    memcpy(&(aux->parametro),stream , sizeof(int));
@@ -151,21 +112,14 @@ t_mensaje* deserializar_instrucciones(t_buffer* buffer){
 
 	    list_add(mensaje->listaInstrucciones,aux);
 	    i++;
-	    free(aux);
 	}
-	*/
-
-
 
 	memcpy(&(mensaje->tamanioProceso), stream, sizeof(int));
 
-	//free(stream);
 	free(buffer);
 
 	return mensaje;
 }
-
-
 
 int calcular_buffer_size(t_list* lista){
 	int size;

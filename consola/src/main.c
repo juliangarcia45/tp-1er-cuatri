@@ -26,12 +26,9 @@ int main(int argc, char** argv[]){
 
  	enviar_instrucciones(kernel_fd, size, listaInstrucciones,tam);
 
-	scanf("%d", &a);
-	send_debug(kernel_fd);
 
-
-	scanf("%d", &a);
-	limpiarConfiguracion();
+ 	log_info(logger, "Se realizo el envio se desconecto del kernel");
+ 	limpiarConfiguracion();
 
 
 }

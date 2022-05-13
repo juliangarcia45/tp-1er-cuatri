@@ -14,7 +14,14 @@ typedef struct instrucciones{
 	int parametro2;
 }INSTRUCCIONES;
 
-
+typedef struct pcb{
+	int id_pcb;
+	int size;
+	t_list* instrucciones;
+	int program_counter;
+	int tabla_paginas;
+	float estimacion_rafaga;
+}PCB;
 
 
 

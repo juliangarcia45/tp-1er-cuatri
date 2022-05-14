@@ -11,7 +11,7 @@ typedef struct {
     char* server_name;
 } t_procesar_conexion_args;
 
-PCB* pcb=malloc(sizeof(pcb));
+PCB* pcb;
 
 static void procesar_conexion(void* void_args) {
     t_procesar_conexion_args* args = (t_procesar_conexion_args*) void_args;
@@ -26,6 +26,7 @@ static void procesar_conexion(void* void_args) {
 
 int server_escuchar(char* server_name, int server_socket) {
     int cliente_socket = esperar_cliente(logger, server_name, server_socket);
+    pcb=malloc(sizeof(pcb));
 
     if (cliente_socket != -1) {
     	t_mensaje* mensaje=malloc(sizeof(t_mensaje));

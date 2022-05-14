@@ -9,7 +9,7 @@
 
 static int PID = 1;
 
-PCB crear_pcb(t_mensaje* mensaje){
+PCB* crear_pcb(t_mensaje* mensaje){
 	PCB* pcb= malloc(sizeof(PCB));
 	pcb->id_pcb=PID;
 	PID++;

@@ -20,7 +20,7 @@
 #include "estructuras.h"
 #include "kernelConfig.h"
 
-void crear_pcb(t_mensaje* mensaje);
+PCB* crear_pcb(t_mensaje* mensaje);
 
 
 

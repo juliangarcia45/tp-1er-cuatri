@@ -75,6 +75,7 @@ t_list* parseo_archivo(char** path)
 				printf("No se ha podido reservar memoria.\n");
 				exit(1);
 		}
+		//instrucs->comando = malloc(sizeof(instrucs->comando));
 		instrucs->parametro=0;
 		instrucs->parametro2=0;
 
@@ -94,6 +95,7 @@ t_list* parseo_archivo(char** path)
 		}
 
 	list_add(listaInstrucciones,instrucs);
+	//free(instrucs->comando);
 	}
 	return listaInstrucciones;
 }

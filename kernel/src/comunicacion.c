@@ -11,6 +11,8 @@ typedef struct {
     char* server_name;
 } t_procesar_conexion_args;
 
+PCB* pcb=malloc(sizeof(pcb));
+
 static void procesar_conexion(void* void_args) {
     t_procesar_conexion_args* args = (t_procesar_conexion_args*) void_args;
     int cliente_socket = args->fd;
@@ -28,16 +30,21 @@ int server_escuchar(char* server_name, int server_socket) {
     if (cliente_socket != -1) {
     	t_mensaje* mensaje=malloc(sizeof(t_mensaje));
     	mensaje=recibir_instrucciones(cliente_socket);
+    	pcb=crear_pcb(mensaje);
         pthread_t hilo;
         t_procesar_conexion_args* args = malloc(sizeof(t_procesar_conexion_args));
         args->fd = cliente_socket;
         args->server_name = server_name;
         pthread_create(&hilo, NULL, (void*) procesar_conexion, (void*) args);
         pthread_detach(hilo);
-
-
-
         return 1;
     }
     return 0;
 }
+
+//ENVIAR A DISPATCH
+//ENVIAR PCB
+
+
+
+

@@ -17,6 +17,7 @@
 #include "protocolo.h"
 #include "socket.h"
 #include "kernelConfig.h"
+#include "estructurasKernel.h"
 
 int server_escuchar(char* server_name, int server_socket);
 

@@ -1,7 +1,7 @@
 /*
  * comunicacion.h
  *
- *  Created on: 16 abr. 2022
+ *  Created on: 23 abr. 2022
  *      Author: utnso
  */
 
@@ -16,13 +16,8 @@
 #include <commons/config.h>
 #include "protocolo.h"
 #include "socket.h"
-#include "kernelConfig.h"
-#include "estructurasKernel.h"
+#include "cpuConfig.h"
 
-
-//SERVIDOR
-int server_escuchar(char* server_name, int server_socket);
-//CLIENTE
-int generar_conexiones(int* interrupt_fd, int* dispatch_fd, t_config_kernel* configuracion);
+int servers_escuchar(char* server_name, int server_socket, char* server_dispatch_name, int server_dispatch_socket);
 
 #endif /* COMUNICACION_H_ */

@@ -21,7 +21,12 @@
 
 typedef enum {
     DEBUG = 69,
-	NO_OP
+	NO_OP,
+    I_O,
+    READ,
+    WRITE,
+    COPY,
+    EXIT
 } op_code;
 
 typedef struct{
@@ -37,7 +42,6 @@ typedef struct {
 
 
 
-
 bool send_debug(int fd);
 //INSTRUCCIONES CONSOLA-KERNEL
 static void* serializar_instrucciones_tam(int size, t_list* lista, int tamanioProceso);
@@ -49,6 +53,7 @@ int calcular_buffer_size(t_list* lista);
 void* serializar_pcb(PCB* pcb);
 void enviar_pcb(int socket_fd, PCB* pcb );
 int calcular_pcb_size(PCB* pcb);
-
+//bool send_debug_interrupt(int fd);
+//bool validarOpCode(op_code cod);
 
 #endif /* SRC_PROTOCOLO_H_ */

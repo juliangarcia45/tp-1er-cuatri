@@ -15,6 +15,18 @@ bool send_debug(int fd) {
     return true;
 }
 
+/*bool send_debug_interrupt(int fd) {
+    op_code cop = DEBUGDOS;
+    if (send(fd, &cop, sizeof(op_code), 0) != sizeof(op_code)){
+        return false;
+    }
+    return true;
+}
+
+bool validarOpCode(op_code cod) {
+	return (cod == DEBUGDOS || cod == I_O || cod == EXIT);
+}*/
+
 //INSTRUCCIONES CONSOLA A KERNEL
 void enviar_instrucciones(int socket_fd, int size, t_list* lista, int tamanioProceso ){
 
@@ -218,3 +230,4 @@ int calcular_pcb_size(PCB* pcb){
 	free(aux);
 	return size;
 }
+

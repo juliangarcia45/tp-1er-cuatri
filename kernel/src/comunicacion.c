@@ -11,13 +11,17 @@ typedef struct {
     char* server_name;
 } t_procesar_conexion_args;
 
-PCB* pcb;
+
 
 static void procesar_conexion(void* void_args) {
     t_procesar_conexion_args* args = (t_procesar_conexion_args*) void_args;
     int cliente_socket = args->fd;
     char* server_name = args->server_name;
     free(args);
+
+    t_mensaje* mensaje=malloc(sizeof(t_mensaje));
+    mensaje=recibir_instrucciones(cliente_socket);
+    pcb=crear_pcb(mensaje);
 
     liberar_conexion(cliente_socket);
     log_info(logger, "La consola se desconecto de %s server", server_name);
@@ -29,9 +33,6 @@ int server_escuchar(char* server_name, int server_socket) {
     pcb=malloc(sizeof(pcb));
 
     if (cliente_socket != -1) {
-    	t_mensaje* mensaje=malloc(sizeof(t_mensaje));
-    	mensaje=recibir_instrucciones(cliente_socket);
-    	pcb=crear_pcb(mensaje);
         pthread_t hilo;
         t_procesar_conexion_args* args = malloc(sizeof(t_procesar_conexion_args));
         args->fd = cliente_socket;

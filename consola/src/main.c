@@ -12,8 +12,8 @@ int main(int argc, char** argv[]){
 	generar_conexion(&kernel_fd, configuracion);
 
 	int a;
-	argv[1] = "/home/utnso/Escritorio/Tp kiss/tp-2022-1c-Grupo-52/consolaInstrucciones.txt";
-	argv[2] = "555";
+	//argv[1] = "/home/utnso/Escritorio/Tp kiss/tp-2022-1c-Grupo-52/consolaInstrucciones.txt";
+	//argv[2] = "555";
 	// Parseo del archivo y armado de lista
 	t_list* listaInstrucciones = parseo_archivo(argv[1]);
 

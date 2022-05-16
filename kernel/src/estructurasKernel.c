@@ -11,6 +11,7 @@ static int PID = 1;
 
 PCB* crear_pcb(t_mensaje* mensaje){
 	PCB* pcb= malloc(sizeof(PCB));
+	pcb->instrucciones=malloc(sizeof(mensaje->listaInstrucciones));
 	pcb->id_pcb=PID;
 	PID++;
 	pcb->size=mensaje->tamanioProceso;

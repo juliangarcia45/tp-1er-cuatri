@@ -26,7 +26,9 @@ typedef enum {
     READ,
     WRITE,
     COPY,
-    EXIT
+    EXIT,
+    DISPATCH,
+    INTERRUPT
 } op_code;
 
 typedef struct{
@@ -40,6 +42,11 @@ typedef struct {
     void* stream; // Payload
 } t_buffer;
 
+typedef struct {
+    int op_code;
+    t_buffer* buffer;
+} t_paquete;
+
 
 
 bool send_debug(int fd);
@@ -51,7 +58,9 @@ t_mensaje* recibir_instrucciones(int socket_fd);
 int calcular_buffer_size(t_list* lista);
 //PCB KERNEL-CPU
 void* serializar_pcb(PCB* pcb);
+PCB* deserializar_pcb(t_paquete* paquete_pcb);
 void enviar_pcb(int socket_fd, PCB* pcb );
+PCB* recibir_pcb(int socket_fd);
 int calcular_pcb_size(PCB* pcb);
 //bool send_debug_interrupt(int fd);
 //bool validarOpCode(op_code cod);

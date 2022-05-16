@@ -19,6 +19,7 @@
 #include "kernelConfig.h"
 #include "estructurasKernel.h"
 
+PCB* pcb;
 
 //SERVIDOR
 int server_escuchar(char* server_name, int server_socket);

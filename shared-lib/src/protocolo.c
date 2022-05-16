@@ -106,11 +106,13 @@ t_mensaje* deserializar_instrucciones(t_buffer* buffer){
     int i=0;
 	t_mensaje* mensaje=malloc(sizeof(t_mensaje));
 
+
 	void* stream = buffer->stream;
 
 	memcpy(&(mensaje->elementosLista), stream, sizeof(int));
 	stream += sizeof(int);
 
+	mensaje->listaInstrucciones=malloc(sizeof(mensaje->elementosLista*sizeof(char[32])));
 	while(i!=mensaje->elementosLista)
 	{
 		INSTRUCCIONES* aux=malloc(sizeof(INSTRUCCIONES));
@@ -154,21 +156,49 @@ void enviar_pcb(int socket_fd, PCB* pcb ){
 	int size=calcular_pcb_size(pcb)+sizeof(int);
 	void* stream = serializar_pcb(pcb);
 	t_buffer* buffer=malloc(size);
+	t_paquete* paquete_pcb= malloc(sizeof(t_paquete));
 	buffer->size=size;
 	buffer->stream=stream;
 
-	void* a_enviar=malloc(buffer->size+sizeof(int));
+	paquete_pcb->buffer=buffer;
+    paquete_pcb->op_code=DISPATCH;
+
+	void* a_enviar=malloc(buffer->size + 2*sizeof(int));
 	int offset=0;
 
-	memcpy(a_enviar + offset, &(buffer->size), sizeof(int));
+	memcpy(a_enviar + offset, &(paquete_pcb->op_code), sizeof(int));
 	offset += sizeof(int);
-	memcpy(a_enviar + offset, buffer->stream, buffer->size);
+	memcpy(a_enviar + offset, &(paquete_pcb->buffer->size), sizeof(int));
+	offset += sizeof(int);
+	memcpy(a_enviar + offset, paquete_pcb->buffer->stream, paquete_pcb->buffer->size);
 
-	send(socket_fd, a_enviar,buffer->size+sizeof(int) ,0);
 
-    free(buffer);
+	send(socket_fd, a_enviar,buffer->size + 2*sizeof(int) ,0);
+
 	free(a_enviar);
+	free(paquete_pcb->buffer->stream);
+	free(paquete_pcb->buffer);
+	free(paquete_pcb);
 
+}
+
+PCB* recibir_pcb(int socket_fd)
+{
+	t_paquete* paquete_pcb = malloc(sizeof(t_paquete));
+	paquete_pcb->buffer = malloc(sizeof(t_buffer));
+
+
+	recv(socket_fd, &(paquete_pcb->op_code), sizeof(int), 0);
+
+	recv(socket_fd, &(paquete_pcb->buffer->size), sizeof(int), 0);
+	paquete_pcb->buffer->stream = malloc(paquete_pcb->buffer->size);
+	recv(socket_fd, paquete_pcb->buffer->stream, paquete_pcb->buffer->size, 0);
+
+	PCB* pcb = deserializar_pcb(paquete_pcb);
+
+	//free(buffer);
+
+	return pcb;
 }
 
 void* serializar_pcb(PCB* pcb) {
@@ -213,6 +243,46 @@ void* serializar_pcb(PCB* pcb) {
 
     free(aux);
     return stream;
+}
+
+PCB* deserializar_pcb(t_paquete* paquete_pcb){
+    int i=0;
+	PCB* pcb=malloc(sizeof(PCB));
+	int elementosLista;
+
+	void* stream = paquete_pcb->buffer->stream;
+
+	memcpy(elementosLista, stream, sizeof(int));
+	stream += sizeof(int);
+
+	memcpy(&(pcb->id_pcb), stream, sizeof(int));
+	stream += sizeof(int);
+	memcpy(&(pcb->size), stream, sizeof(int));
+	stream += sizeof(int);
+
+	while(i!=elementosLista)
+	{
+		INSTRUCCIONES* aux=malloc(sizeof(INSTRUCCIONES));
+		memcpy(&(aux->comando), stream, sizeof(aux->comando));
+	    stream += sizeof(aux->comando);
+	    memcpy(&(aux->parametro),stream , sizeof(int));
+	    stream += sizeof(int);
+	    memcpy(&(aux->parametro2), stream, sizeof(int));
+	    stream += sizeof(int);
+
+	    list_add(pcb->instrucciones,aux);
+	    i++;
+	}
+
+	memcpy(&(pcb->program_counter), stream, sizeof(int));
+	stream += sizeof(int);
+	memcpy(&(pcb->tabla_paginas), stream, sizeof(int));
+	stream += sizeof(int);
+	memcpy(&(pcb->estimacion_rafaga), stream, sizeof(float));
+
+	free(paquete_pcb);
+
+	return pcb;
 }
 
 int calcular_pcb_size(PCB* pcb){

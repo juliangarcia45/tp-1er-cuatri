@@ -29,6 +29,12 @@ static void procesar_conexion(void* void_args) {
  case DEBUG:
  log_info(logger, "debug");
  break;
+ case DISPATCH: {
+	 PCB* pcb= malloc(sizeof(PCB));
+	 pcb=recibir_pcb(cliente_socket);
+	 log_info(logger,"recibi pcb");
+	 break;
+ }
  // Errores
  case -1:
  log_error(logger, "Cliente desconectado de %s...", server_name);

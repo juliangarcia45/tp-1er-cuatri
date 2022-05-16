@@ -14,6 +14,7 @@
 #include <commons/config.h>
 #include "socket.h"
 #include "kernelConfig.h"
+#include "comunicacion.h"
 
 int kernelServer;
 

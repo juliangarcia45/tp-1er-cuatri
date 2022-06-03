@@ -23,9 +23,6 @@ int main(){
 	free(puerto);
 	while (server_escuchar("KERNEL_SV", kernelServer));
 
-	enviar_pcb(dispatch_fd,pcb);
-
-
 	limpiarConfiguracion();
 	return 0;
 

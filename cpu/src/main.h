@@ -19,5 +19,8 @@
 int cpuServerInterrupt;
 int cpuServerDispatch;
 
+void dispatchCpu (void);
+void interruptCpu (void);
+
 
 #endif /* MAIN_H_ */

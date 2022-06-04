@@ -8,17 +8,49 @@
 #include "main.h"
 
 int main(){
-	cargarConfiguracion();
-	char* puertoInterrupt = string_itoa(configuracion->PUERTO_ESCUCHA_INTERRUPT);
-    char* puertoDispatch = string_itoa(configuracion->PUERTO_ESCUCHA_DISPATCH);
+	//cargarConfiguracion();
+	//char* puertoInterrupt = string_itoa(configuracion->PUERTO_ESCUCHA_INTERRUPT);
+    //char* puertoDispatch = string_itoa(configuracion->PUERTO_ESCUCHA_DISPATCH);
 	//INICIO SERVIDORES
-	cpuServerInterrupt = iniciar_servidor(logger,"interrupt server","127.0.0.1",puertoInterrupt);
-    cpuServerDispatch = iniciar_servidor(logger,"dispatch server","127.0.0.1",puertoDispatch);
-	free(puertoInterrupt);
-    free(puertoDispatch);
-	while (servers_escuchar("INTERRUPT_SV", cpuServerInterrupt,"DISPATCH_SV", cpuServerDispatch));
+	//cpuServerInterrupt = iniciar_servidor(logger,"interrupt server","127.0.0.1",puertoInterrupt);
+    //cpuServerDispatch = iniciar_servidor(logger,"dispatch server","127.0.0.1",puertoDispatch);
+	//free(puertoInterrupt);
+    //free(puertoDispatch);
+	//while (servers_escuchar("INTERRUPT_SV", cpuServerInterrupt,"DISPATCH_SV", cpuServerDispatch));
 
-	limpiarConfiguracion();
+	pthread_t dispatch_id;
+	pthread_t interrupt_id;
+
+	pthread_create(dispatch_id,NULL,dispatchCpu,NULL);
+	pthread_create(interrupt_id,NULL,interruptCpu,NULL);
+
+	//limpiarConfiguracion();
 	return 0;
 
+}
+
+void dispatchCpu () {
+
+	cargarConfiguracion();
+
+	char* puertoDispatch = string_itoa(configuracion->PUERTO_ESCUCHA_DISPATCH);
+
+	cpuServerDispatch = iniciar_servidor(logger,"dispatch server","127.0.0.1",puertoDispatch);
+
+	free(puertoDispatch);
+
+	while(server_escuchar("DISPATCH_SV",cpuServerDispatch));
+}
+
+void interruptCpu () {
+
+	cargarConfiguracion();
+
+	char* puertoInterrupt = string_itoa(configuracion->PUERTO_ESCUCHA_INTERRUPT);
+
+	cpuServerInterrupt = iniciar_servidor(logger,"interrupt server","127.0.0.1",puertoInterrupt);
+
+	free(puertoInterrupt);
+
+	while(server_escuchar("INTERRUPT_SV",cpuServerInterrupt));
 }

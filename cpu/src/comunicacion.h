@@ -19,5 +19,6 @@
 #include "cpuConfig.h"
 
 int servers_escuchar(char* server_name, int server_socket, char* server_dispatch_name, int server_dispatch_socket);
+int server_escuchar(char* server_name, int server_socket);
 
 #endif /* COMUNICACION_H_ */

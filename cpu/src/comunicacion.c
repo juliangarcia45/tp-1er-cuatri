@@ -68,6 +68,19 @@ int servers_escuchar(char* server_interrupt_name, int server_interrupt_socket, c
 	return 0;
 }
 
+int server_escuchar(char* server_name, int server_socket){
+	int cliente_socket = esperar_cliente(logger,server_name, server_socket);
+
+	if (cliente_socket != -1 ) {
+			t_procesar_conexion_args* argsSev = malloc(sizeof(t_procesar_conexion_args));
+			argsSev->fd = cliente_socket;
+			argsSev->server_name = server_name;
+			procesar_conexion(argsSev);
+	        return 1;
+		}
+
+}
+
 //HAY QUE PROCESAR LAS INTERRUPCIONES CON UN HILO
 //HACER GLOBALES LOS SOCKETS
 

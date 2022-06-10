@@ -154,7 +154,7 @@ int calcular_buffer_size(t_list* lista){
 void enviar_pcb(int socket_fd, PCB* pcb ){
 
 	int size=calcular_pcb_size(pcb)+sizeof(int);
-	void* stream = serializar_pcb(pcb);
+	void* stream = serializar_pcb(pcb, size);
 	t_buffer* buffer=malloc(size);
 	t_paquete* paquete_pcb= malloc(sizeof(t_paquete));
 	buffer->size=size;
@@ -201,9 +201,8 @@ PCB* recibir_pcb(int socket_fd)
 	return pcb;
 }
 
-void* serializar_pcb(PCB* pcb) {
+void* serializar_pcb(PCB* pcb, int size) {
     INSTRUCCIONES* aux;
-    int size=sizeof(int)+calcular_pcb_size(pcb);
 
     aux = list_get(pcb->instrucciones,0);
     int elementosLista= list_size(pcb->instrucciones);

@@ -78,6 +78,7 @@ int server_escuchar(char* server_name, int server_socket){
 			procesar_conexion(argsSev);
 	        return 1;
 		}
+	return 0;
 
 }
 

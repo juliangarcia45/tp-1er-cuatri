@@ -19,7 +19,7 @@
 int cpuServerInterrupt;
 int cpuServerDispatch;
 
-void dispatchCpu (void);
+void dispatchCpu(void* puerto);
 void interruptCpu (void);
 
 

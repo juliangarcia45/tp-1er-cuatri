@@ -10,10 +10,11 @@
 
 int main(){
 	cargarConfiguracion();
+	sem_init(&sem,0,1);
 	char* puertoInterrupt = string_itoa(configuracion->PUERTO_ESCUCHA_INTERRUPT);
     char* puertoDispatch= string_itoa(configuracion->PUERTO_ESCUCHA_DISPATCH);
 	//INICIO SERVIDORES
-	cpuServerInterrupt = iniciar_servidor(logger,"interrupt server","127.0.0.1",puertoInterrupt);
+	//cpuServerInterrupt = iniciar_servidor(logger,"interrupt server","127.0.0.1",puertoInterrupt);
 
     cpuServerDispatch = iniciar_servidor(logger,"dispatch server","127.0.0.1",puertoDispatch);
 
@@ -22,13 +23,13 @@ int main(){
 	//while (servers_escuchar("INTERRUPT_SV", cpuServerInterrupt,"DISPATCH_SV", cpuServerDispatch));
 
 	pthread_t dispatch_id;
-	pthread_t interrupt_id;
+	//pthread_t interrupt_id;
 
 	pthread_create(&dispatch_id,NULL,(void*) dispatchCpu,NULL);
 
 
-	pthread_create(&interrupt_id,NULL,(void*) interruptCpu,NULL);
-	pthread_join(interrupt_id,0);
+	//pthread_create(&interrupt_id,NULL,(void*) interruptCpu,NULL);
+	//pthread_join(interrupt_id,0);
 	pthread_join(dispatch_id,0);
 
 

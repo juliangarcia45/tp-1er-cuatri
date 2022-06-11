@@ -155,7 +155,7 @@ void enviar_pcb(int socket_fd, PCB* pcb ){
 
 	int size=calcular_pcb_size(pcb)+sizeof(int);
 	void* stream = serializar_pcb(pcb, size);
-	t_buffer* buffer=malloc(size);
+	t_buffer* buffer=malloc(size); //ROMPE ACA EL MALLOC
 	t_paquete* paquete_pcb= malloc(sizeof(t_paquete));
 	buffer->size=size;
 	buffer->stream=stream;

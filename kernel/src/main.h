@@ -17,6 +17,6 @@
 #include "comunicacion.h"
 
 int kernelServer;
-
+int interrupt_fd, dispatch_fd;
 
 #endif /* MAIN_H_ */

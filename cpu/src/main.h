@@ -15,6 +15,7 @@
 #include "socket.h"
 #include "cpuConfig.h"
 #include "protocolo.h"
+#include "comunicacion.h"
 
 int cpuServerInterrupt;
 int cpuServerDispatch;

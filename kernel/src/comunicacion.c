@@ -23,7 +23,6 @@ static void procesar_conexion(void* void_args) {
     t_mensaje* mensaje=malloc(sizeof(t_mensaje));
     mensaje=recibir_instrucciones(cliente_socket);
     pcb=crear_pcb(mensaje);
-    int dispatch_fd=atoi(port_dispatch);
     enviar_pcb(dispatch_fd, pcb);
 
     liberar_conexion(cliente_socket);

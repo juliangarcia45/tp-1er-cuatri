@@ -10,7 +10,7 @@ int main(){
 	cargarConfiguracion();
 	char* puerto = string_itoa(configuracion->PUERTO_ESCUCHA);
 	//CLIENTE
-	int interrupt_fd, dispatch_fd;
+
 	generar_conexiones(&interrupt_fd, &dispatch_fd, configuracion);
 
 	//MENSAJES DE PRUEBA A CPU

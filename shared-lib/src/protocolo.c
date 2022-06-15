@@ -189,13 +189,13 @@ void enviar_pcb(int socket_fd, PCB* pcb ){
 PCB* recibir_pcb(int socket_fd)
 {
 	t_paquete* paquete_pcb = malloc(sizeof(t_paquete));
-	//paquete_pcb->buffer = malloc(sizeof(t_buffer));
+	paquete_pcb->buffer = malloc(sizeof(t_buffer));
 
 
 	recv(socket_fd, &(paquete_pcb->op_code), sizeof(int), 0);
 
 	recv(socket_fd, &(paquete_pcb->buffer->size), sizeof(int), 0);
-	paquete_pcb->buffer->stream = malloc(paquete_pcb->buffer->size);
+	paquete_pcb->buffer->stream = malloc(paquete_pcb->buffer->size);//aca hace malloc 6 por algun motivo
 	recv(socket_fd, paquete_pcb->buffer->stream, paquete_pcb->buffer->size, 0);
 
 	PCB* pcb = deserializar_pcb(paquete_pcb);
@@ -252,7 +252,7 @@ void* serializar_pcb(PCB* pcb, int size) {
 PCB* deserializar_pcb(t_paquete* paquete_pcb){
     int i=0;
 	PCB* pcb=malloc(sizeof(PCB));
-	int elementosLista;
+	int* elementosLista=malloc(sizeof(int));
 
 	void* stream = paquete_pcb->buffer->stream;
 
@@ -264,8 +264,8 @@ PCB* deserializar_pcb(t_paquete* paquete_pcb){
 	memcpy(&(pcb->size), stream, sizeof(int));
 	stream += sizeof(int);
 
-	pcb->instrucciones=malloc(elementosLista*sizeof(char[32]));
-	while(i!=elementosLista)
+	pcb->instrucciones=malloc((*elementosLista)*sizeof(char[32]));
+	while(i!=(*elementosLista))
 	{
 		INSTRUCCIONES* aux=malloc(sizeof(INSTRUCCIONES));
 		memcpy(&(aux->comando), stream, sizeof(aux->comando));

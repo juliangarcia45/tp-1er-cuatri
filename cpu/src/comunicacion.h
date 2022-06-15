@@ -19,7 +19,7 @@
 #include "cpuConfig.h"
 #include <semaphore.h>
 
-sem_t sem;
+//sem_t sem;
 
 int servers_escuchar(char* server_name, int server_socket, char* server_dispatch_name, int server_dispatch_socket);
 int server_escuchar(char* server_name, int server_socket);

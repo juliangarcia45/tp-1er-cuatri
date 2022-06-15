@@ -10,7 +10,7 @@
 
 int main(){
 	cargarConfiguracion();
-	sem_init(&sem,0,1);
+	//sem_init(&sem,0,1);
 	char* puertoInterrupt = string_itoa(configuracion->PUERTO_ESCUCHA_INTERRUPT);
     char* puertoDispatch= string_itoa(configuracion->PUERTO_ESCUCHA_DISPATCH);
 	//INICIO SERVIDORES

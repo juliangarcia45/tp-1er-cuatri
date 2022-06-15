@@ -11,9 +11,6 @@ typedef struct {
     char* server_name;
 } t_procesar_conexion_args;
 
-char* port_dispatch;
-char* port_interrupt;
-
 static void procesar_conexion(void* void_args) {
     t_procesar_conexion_args* args = (t_procesar_conexion_args*) void_args;
     int cliente_socket = args->fd;
@@ -22,17 +19,18 @@ static void procesar_conexion(void* void_args) {
 
     t_mensaje* mensaje=malloc(sizeof(t_mensaje));
     mensaje=recibir_instrucciones(cliente_socket);
+    log_info(logger, "La consola se desconecto de %s server", server_name);
     pcb=crear_pcb(mensaje);
     enviar_pcb(dispatch_fd, pcb);
+    log_info(logger,"llegue");
 
     liberar_conexion(cliente_socket);
-    log_info(logger, "La consola se desconecto de %s server", server_name);
     return;
 }
 
 int server_escuchar(char* server_name, int server_socket) {
     int cliente_socket = esperar_cliente(logger, server_name, server_socket);
-    pcb=malloc(sizeof(pcb));
+
 
     if (cliente_socket != -1) {
         pthread_t hilo;
@@ -50,8 +48,8 @@ int server_escuchar(char* server_name, int server_socket) {
 //ENVIAR PCB
 //CLIENTE
 int generar_conexiones(int* interrupt_fd, int* dispatch_fd, t_config_kernel* configuracion) {
-    port_dispatch = string_itoa(configuracion->PUERTO_CPU_DISPATCH);
-    port_interrupt = string_itoa(configuracion->PUERTO_CPU_INTERRUPT);
+    char* port_dispatch = string_itoa(configuracion->PUERTO_CPU_DISPATCH);
+    char* port_interrupt = string_itoa(configuracion->PUERTO_CPU_INTERRUPT);
 
     *dispatch_fd = crear_conexion(
             logger,
@@ -60,7 +58,7 @@ int generar_conexiones(int* interrupt_fd, int* dispatch_fd, t_config_kernel* con
             port_dispatch
     );
 
-    //free(port_dispatch);
+    free(port_dispatch);
 
     *interrupt_fd = crear_conexion(
             logger,
@@ -69,7 +67,7 @@ int generar_conexiones(int* interrupt_fd, int* dispatch_fd, t_config_kernel* con
             port_interrupt
     );
 
-    //free(port_interrupt);
+    free(port_interrupt);
 
     return *interrupt_fd != 0 && *dispatch_fd != 0;
 }

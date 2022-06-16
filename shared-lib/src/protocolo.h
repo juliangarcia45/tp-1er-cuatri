@@ -58,7 +58,7 @@ t_mensaje* recibir_instrucciones(int socket_fd);
 int calcular_buffer_size(t_list* lista);
 //PCB KERNEL-CPU
 void* serializar_pcb(PCB* pcb, int size);
-PCB* deserializar_pcb(t_paquete* paquete_pcb);
+PCB* deserializar_pcb(t_buffer* buffer);
 void enviar_pcb(int socket_fd, PCB* pcb );
 PCB* recibir_pcb(int socket_fd);
 int calcular_pcb_size(PCB* pcb);

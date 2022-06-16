@@ -188,15 +188,14 @@ void enviar_pcb(int socket_fd, PCB* pcb ){
 
 PCB* recibir_pcb(int socket_fd)
 {
-	t_paquete* paquete_pcb = malloc(sizeof(t_paquete));
-	paquete_pcb->buffer = malloc(sizeof(t_buffer));
+	t_buffer* paquete_pcb = malloc(sizeof(t_buffer));
 
 
-	recv(socket_fd, &(paquete_pcb->op_code), sizeof(int), 0);
+	//recv(socket_fd, &(paquete_pcb->op_code), sizeof(int), 0);
 
-	recv(socket_fd, &(paquete_pcb->buffer->size), sizeof(int), 0);
-	paquete_pcb->buffer->stream = malloc(paquete_pcb->buffer->size);//aca hace malloc 6 por algun motivo
-	recv(socket_fd, paquete_pcb->buffer->stream, paquete_pcb->buffer->size, 0);
+	recv(socket_fd, &(paquete_pcb->size), sizeof(int), 0);
+	paquete_pcb->stream = malloc(paquete_pcb->size);//aca hace malloc 6 por algun motivo
+	recv(socket_fd, paquete_pcb->stream, paquete_pcb->size, 0);
 
 	PCB* pcb = deserializar_pcb(paquete_pcb);
 
@@ -249,12 +248,12 @@ void* serializar_pcb(PCB* pcb, int size) {
     return stream;
 }
 
-PCB* deserializar_pcb(t_paquete* paquete_pcb){
+PCB* deserializar_pcb(t_buffer* buffer){
     int i=0;
 	PCB* pcb=malloc(sizeof(PCB));
 	int* elementosLista=malloc(sizeof(int));
 
-	void* stream = paquete_pcb->buffer->stream;
+	void* stream = buffer->stream;
 
 	memcpy(elementosLista, stream, sizeof(int));
 	stream += sizeof(int);
@@ -285,7 +284,7 @@ PCB* deserializar_pcb(t_paquete* paquete_pcb){
 	stream += sizeof(int);
 	memcpy(&(pcb->estimacion_rafaga), stream, sizeof(float));
 
-	free(paquete_pcb);
+	free(buffer);
 
 	return pcb;
 }

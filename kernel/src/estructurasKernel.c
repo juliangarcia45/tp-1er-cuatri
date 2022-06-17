@@ -10,12 +10,19 @@
 static int PID = 1;
 
 PCB* crear_pcb(t_mensaje* mensaje){
+	int i=0;
 	PCB* pcb=malloc(sizeof(PCB));
 	pcb->id_pcb=PID;
 	PID++;
 	pcb->size=mensaje->tamanioProceso;
+	pcb->instrucciones=list_create();
 	t_link_element* aux1 = mensaje->listaInstrucciones->head;
-	pcb->instrucciones=malloc(mensaje->elementosLista*sizeof(INSTRUCCIONES));
+	/*while(i < mensaje->elementosLista){
+		pcb->instrucciones[i]=NULL;
+		i++;
+	}*/
+	//pcb->instrucciones=malloc(mensaje->elementosLista*sizeof(INSTRUCCIONES));
+
 	while(aux1!=NULL)
 		{
 		    INSTRUCCIONES* auxl2 = aux1->data;

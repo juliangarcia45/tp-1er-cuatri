@@ -15,33 +15,24 @@ int main(int argc, char** argv[]){
 	//argv[1] = "/home/utnso/Escritorio/Tp kiss/tp-2022-1c-Grupo-52/consolaInstrucciones.txt";
 	//argv[2] = "555";
 	// Parseo del archivo y armado de lista
-	t_list* listaInstrucciones = parseo_archivo(argv[1]);
+	t_list* listaInstrucciones = list_create();
+	parseo_archivo(argv[1],listaInstrucciones);
 
 	// Enviar listaInstrucciones y atoi(argv[2])
 	//printf("Parametro a envia con LISTA: %d \n", atoi(argv[2]));
 	// enviarLista(lista, tamanioProceso);
 	int tam = atoi(argv[2]);
-	int size = 0;
 	printf("Parametro a envia con LISTA: %d \n", tam);
 
- 	enviar_instrucciones(kernel_fd, size, listaInstrucciones,tam);
+ 	enviar_instrucciones(kernel_fd, listaInstrucciones,tam);
 
 
  	log_info(logger, "Se realizo el envio se desconecto del kernel");
  	limpiarConfiguracion();
-
-
 }
 
-/* en protocolo
-void enviar(lista){
-	// ARMAR
-	// serializar
-	// send
-}
-*/
 
-t_list* parseo_archivo(char** path)
+void parseo_archivo(char** path, t_list* listaInstrucciones)
 {
 	int i=0;
 
@@ -54,13 +45,13 @@ t_list* parseo_archivo(char** path)
 
 	if(!pseudocode){
 		printf("No se pudo acceder al archivo\n");
-		return 1;
+		return ;
 	}
 
 	char **linea;
 	char *separador = " ";
 
-	t_list* listaInstrucciones = list_create();
+	//t_list* listaInstrucciones = list_create();
 
 	while(fgets(bufer, LONGITUD_MAXIMA_LINEA, pseudocode))
 	{
@@ -95,8 +86,7 @@ t_list* parseo_archivo(char** path)
 		}
 
 	list_add(listaInstrucciones,instrucs);
-	//free(instrucs->comando);
+
 	}
-	return listaInstrucciones;
 }
 

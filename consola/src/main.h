@@ -22,7 +22,7 @@
 
 #define LONGITUD_MAXIMA_LINEA 30   // Para el archivo a leer
 
-t_list* parseo_archivo(char** path);
+void parseo_archivo(char** path,t_list* listaInstrucciones);
 
 
 #endif /* MAIN_H_ */

@@ -21,6 +21,7 @@ static void procesar_conexion(void* void_args) {
     mensaje=recibir_instrucciones(cliente_socket);
     log_info(logger, "La consola se desconecto de %s server", server_name);
     pcb=crear_pcb(mensaje);
+    //AGREGAR A COLA DE NEWS
     enviar_pcb(dispatch_fd, pcb);
     log_info(logger,"llegue");
 

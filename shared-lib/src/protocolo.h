@@ -51,7 +51,7 @@ typedef struct {
 
 bool send_debug(int fd);
 //INSTRUCCIONES CONSOLA-KERNEL
-static void* serializar_instrucciones_tam(int size, t_list* lista, int tamanioProceso);
+void* serializar_instrucciones_tam(int size, t_list* lista, int tamanioProceso);
 t_mensaje* deserializar_instrucciones(t_buffer* buffer);
 void enviar_instrucciones(int socket_fd, t_list* lista, int tamanioProceso );
 t_mensaje* recibir_instrucciones(int socket_fd);
@@ -62,6 +62,11 @@ PCB* deserializar_pcb(t_buffer* buffer);
 void enviar_pcb(int socket_fd, PCB* pcb );
 PCB* recibir_pcb(int socket_fd);
 int calcular_pcb_size(PCB* pcb);
+//TIEMPO BLOQUEO INSTRUCCION I/O
+void enviar_tiempo_bloqueo(int socket_fd, int* tiempoBloqueo);
+int* recibir_tiempo_bloq(int socket_fd);
+void* serializar_tiempo_bloq(int* tiempoBloqueo);
+int* deserializar_tiempo_bloq(t_buffer* buffer);
 //bool send_debug_interrupt(int fd);
 //bool validarOpCode(op_code cod);
 

@@ -162,7 +162,7 @@ void enviar_pcb(int socket_fd, PCB* pcb ){
 	int sizeBuffer=size+sizeof(int);
 	int sizePaquete=sizeBuffer+sizeof(int);
 	void* stream = serializar_pcb(pcb, size);
-	t_buffer* buffer=malloc(sizeBuffer); //ROMPE ACA EL MALLOC
+	t_buffer* buffer=malloc(sizeBuffer);
 	t_paquete* paquete_pcb= malloc(sizePaquete);
 	buffer->size=size;
 	buffer->stream=stream;
@@ -240,6 +240,8 @@ void* serializar_pcb(PCB* pcb, int size) {
 		offset += sizeof(int);
 		aux1 = aux1->next;
 	}
+    memcpy(stream + offset, &pcb->estado, sizeof(int));
+    offset+= sizeof(int);
     memcpy(stream + offset, &pcb->program_counter, sizeof(int));
     offset+= sizeof(int);
     memcpy(stream + offset, &pcb->tabla_paginas, sizeof(int));
@@ -281,6 +283,8 @@ PCB* deserializar_pcb(t_buffer* buffer){
 	    i++;
 	}
 
+	memcpy(&(pcb->estado), stream, sizeof(int));
+    stream += sizeof(int);
 	memcpy(&(pcb->program_counter), stream, sizeof(int));
 	stream += sizeof(int);
 	memcpy(&(pcb->tabla_paginas), stream, sizeof(int));
@@ -300,8 +304,52 @@ int calcular_pcb_size(PCB* pcb){
 		size += 2*sizeof(int) + 32;
 		i++;
 	}
-	size += 5*sizeof(int)+sizeof(float);
+	size += 6*sizeof(int)+sizeof(float);
 
 	return size;
+}
+
+//ENVIO TIEMPO DE BLOQUEO EN MILISEGUNDOS
+void enviar_tiempo_bloqueo(int socket_fd, int* tiempoBloqueo){
+	void* stream = serializar_tiempo_bloq(tiempoBloqueo);
+	t_buffer* buffer=malloc(2*sizeof(int));
+	buffer->size=sizeof(int);
+	buffer->stream=stream;
+
+	void* a_enviar=malloc(2*sizeof(int));
+	int offset=0;
+
+	memcpy(a_enviar + offset, &(buffer->size), sizeof(int));
+	offset += sizeof(int);
+	memcpy(a_enviar + offset, buffer->stream, buffer->size);
+
+	send(socket_fd, a_enviar,2*sizeof(int) ,0);
+
+	free(a_enviar);
+    free(buffer->stream);
+    free(buffer);
+}
+
+int* recibir_tiempo_bloq(int socket_fd){
+	t_buffer* buffer=malloc(sizeof(t_buffer));
+	recv(socket_fd, &(buffer->size), sizeof(int), 0);
+	buffer->stream=malloc(buffer->size);
+	recv(socket_fd, buffer->stream, buffer->size, 0);
+	int* tiempoBloqueo = deserializar_tiempo_bloq(buffer);
+	return tiempoBloqueo;
+}
+
+void* serializar_tiempo_bloq(int* tiempoBloqueo) {
+    void* stream = malloc(sizeof(int));
+    memcpy(stream, &tiempoBloqueo, sizeof(int));
+    return stream;
+}
+
+int* deserializar_tiempo_bloq(t_buffer* buffer){
+	int* tiempoBloqueo=malloc(sizeof(int));
+	void* stream = buffer->stream;
+	memcpy(&(tiempoBloqueo), stream, sizeof(int));
+	free(buffer);
+	return tiempoBloqueo;
 }
 

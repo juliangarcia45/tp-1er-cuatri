@@ -69,7 +69,7 @@ int servers_escuchar(char* server_interrupt_name, int server_interrupt_socket, c
 }
 
 int server_escuchar(char* server_name, int server_socket){
-	int cliente_socket = esperar_cliente(logger,server_name, server_socket);
+	cliente_socket = esperar_cliente(logger,server_name, server_socket);
 	//sem_wait(&sem);
 	if (cliente_socket != -1 ) {
 			t_procesar_conexion_args* argsSev = malloc(sizeof(t_procesar_conexion_args));

@@ -33,6 +33,7 @@ PCB* crear_pcb(t_mensaje* mensaje){
 		    aux1 = aux1->next;
 		    //auxsad=auxsad->next;
 		}
+	pcb->estado=NEW;
 	pcb->estimacion_rafaga=0;
 	pcb->program_counter=0;
 	pcb->tabla_paginas=0;
